@@ -4,7 +4,7 @@ Ember.TEMPLATES["template_Slider"] = Ember.Handlebars.template(function anonymou
 
 
     stack1 = depth0;
-    stack2 = "ZoomRx.SliderAdjusters";
+    stack2 = "EmSlider.SliderAdjusters";
     stack3 = helpers.view;
     tmp1 = {};
     tmp1.hash = {};
@@ -14,7 +14,7 @@ Ember.TEMPLATES["template_Slider"] = Ember.Handlebars.template(function anonymou
     stack1 = stack3.call(depth0, stack2, tmp1);
     data.buffer.push(escapeExpression(stack1) + "\n");
     stack1 = depth0;
-    stack2 = "ZoomRx.SliderPath";
+    stack2 = "EmSlider.SliderPath";
     stack3 = helpers.view;
     tmp1 = {};
     tmp1.hash = {};

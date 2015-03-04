@@ -43,7 +43,7 @@ Then insert a slider view binding the options of the parent view to it
 
  
     <script type="text/x-handlebars" data-template-name="slider">
-    {{view ZoomRx.Slider optionsBinding="view.options" helpBinding="view.help"}}
+    {{view EmSlider.Slider optionsBinding="view.options" helpBinding="view.help"}}
     </script>
  
 

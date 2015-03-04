@@ -8,18 +8,18 @@ function MM_preloadImages() {
 
 function reCalculateSliderParams() {
 	/* Function used recalculate required elements positions and widths*/
-	for(var view in ZoomRx.CACHE) {
+	for(var view in EmSlider.CACHE) {
     	var element_id = '#' + view;
-    	ZoomRx.CACHE[view] = {};
+    	EmSlider.CACHE[view] = {};
     	var handle = $(element_id).find('.slider-handle');
-		ZoomRx.CACHE[view]['HANDLE_WIDTH'] = handle.width();
-		ZoomRx.CACHE[view]['HANDLE_POSITION'] = handle.position();
-		ZoomRx.CACHE[view]['PATH_WIDTH'] = $(element_id).find('.slider-path').width();
-		ZoomRx.CACHE[view]['INDICATOR_WIDTH'] = $(element_id).find('.slider-value-indicator').width();
+		EmSlider.CACHE[view]['HANDLE_WIDTH'] = handle.width();
+		EmSlider.CACHE[view]['HANDLE_POSITION'] = handle.position();
+		EmSlider.CACHE[view]['PATH_WIDTH'] = $(element_id).find('.slider-path').width();
+		EmSlider.CACHE[view]['INDICATOR_WIDTH'] = $(element_id).find('.slider-value-indicator').width();
     }
 }
 
 function cleanSliderCache() {
-	ZoomRx.CACHE = {};
-	ZoomRx.CONSTANTS = {};
+	EmSlider.CACHE = {};
+	EmSlider.CONSTANTS = {};
 }

@@ -1,22 +1,22 @@
 (function() {
-var ZoomRx = window.ZoomRx = Ember.Namespace.create();
-// ZoomRx.handleMoveTimeOut = []; // This can be at the view level
+var EmSlider = window.EmSlider = Ember.Namespace.create();
+// EmSlider.handleMoveTimeOut = []; // This can be at the view level
 /* Contains the necessary attributes of slider elements.
  * Note: Performance optimization
  */
-ZoomRx.CACHE = {};
+EmSlider.CACHE = {};
 /* Constants store the atrributes temporarily 
  * if the slider are of same size
  * Note: Performance optimization
  */
-ZoomRx.CONSTANTS = {}; 
+EmSlider.CONSTANTS = {}; 
 
 /* Arrow color in slider value indicator */
-ZoomRx.indicatorArrowColor = 'rgb(60,199,222)';
-ZoomRx.indicatorTouchedColor = 'rgb(50,180,212)';
+EmSlider.indicatorArrowColor = 'rgb(60,199,222)';
+EmSlider.indicatorTouchedColor = 'rgb(50,180,212)';
 
 /* To know whether user knows about adjusters */
-ZoomRx.usersAdjustingKnowledge = 0;
+EmSlider.usersAdjustingKnowledge = 0;
 
 /* Load necessary images before loading */
 MM_preloadImages( // TO INCLUDE THE ACTUAL FUNCTION IN SLIDER MODULE
@@ -38,7 +38,7 @@ window.addEventListener(orientationEvent, function() {
 
 })();
 	
-ZoomRx.SliderAdjusters= Ember.View.extend({
+EmSlider.SliderAdjusters= Ember.View.extend({
 	classNames: ['slider-adjusters'],
 	template: Ember.TEMPLATES['template_SliderAdjusters'],
 	touchStart: function(event){
@@ -54,7 +54,7 @@ ZoomRx.SliderAdjusters= Ember.View.extend({
 	}
 });
 
-ZoomRx.SliderPath = Ember.View.extend({
+EmSlider.SliderPath = Ember.View.extend({
 	classNames: ['slider-path-container'],
 	template: Ember.TEMPLATES['template_SliderPath'],
 	slider_handle:null,
@@ -87,24 +87,24 @@ ZoomRx.SliderPath = Ember.View.extend({
 		var handle = this.$('.slider-handle');
 		var path = this.$('.slider-path');
 		var indicator = this.$('.slider-value-indicator');
-		if(!options.sameSizedSliders || !ZoomRx.CONSTANTS.valid) {
-			ZoomRx.CACHE[view_id] = {};
-			ZoomRx.CACHE[view_id]['HANDLE_WIDTH'] = handle.width();
-			ZoomRx.CACHE[view_id]['PATH_WIDTH'] = path.width();
-			ZoomRx.CACHE[view_id]['INDICATOR_WIDTH'] = indicator.width();
+		if(!options.sameSizedSliders || !EmSlider.CONSTANTS.valid) {
+			EmSlider.CACHE[view_id] = {};
+			EmSlider.CACHE[view_id]['HANDLE_WIDTH'] = handle.width();
+			EmSlider.CACHE[view_id]['PATH_WIDTH'] = path.width();
+			EmSlider.CACHE[view_id]['INDICATOR_WIDTH'] = indicator.width();
 
 			/*Copy to constants and use them during loading of other sliders 
 			 * if all are of equal size
 			 */
-			ZoomRx.CONSTANTS['HANDLE_WIDTH'] = ZoomRx.CACHE[view_id]['HANDLE_WIDTH'];
-			ZoomRx.CONSTANTS['PATH_WIDTH'] = ZoomRx.CACHE[view_id]['PATH_WIDTH'];
-			ZoomRx.CONSTANTS['INDICATOR_WIDTH'] = ZoomRx.CACHE[view_id]['INDICATOR_WIDTH'];
-			ZoomRx.CONSTANTS.valid = true;
+			EmSlider.CONSTANTS['HANDLE_WIDTH'] = EmSlider.CACHE[view_id]['HANDLE_WIDTH'];
+			EmSlider.CONSTANTS['PATH_WIDTH'] = EmSlider.CACHE[view_id]['PATH_WIDTH'];
+			EmSlider.CONSTANTS['INDICATOR_WIDTH'] = EmSlider.CACHE[view_id]['INDICATOR_WIDTH'];
+			EmSlider.CONSTANTS.valid = true;
 		} else {
-			ZoomRx.CACHE[view_id] = {};
-			ZoomRx.CACHE[view_id]['HANDLE_WIDTH'] = ZoomRx.CONSTANTS['HANDLE_WIDTH'];
-			ZoomRx.CACHE[view_id]['PATH_WIDTH'] = ZoomRx.CONSTANTS['PATH_WIDTH'];
-			ZoomRx.CACHE[view_id]['INDICATOR_WIDTH'] = ZoomRx.CONSTANTS['INDICATOR_WIDTH'];
+			EmSlider.CACHE[view_id] = {};
+			EmSlider.CACHE[view_id]['HANDLE_WIDTH'] = EmSlider.CONSTANTS['HANDLE_WIDTH'];
+			EmSlider.CACHE[view_id]['PATH_WIDTH'] = EmSlider.CONSTANTS['PATH_WIDTH'];
+			EmSlider.CACHE[view_id]['INDICATOR_WIDTH'] = EmSlider.CONSTANTS['INDICATOR_WIDTH'];
 		}
 		
 		this.set('slider_handle', handle);
@@ -113,7 +113,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 		this.set('slider_value_indicator',indicator);
 		this.set('slider_value_arrow',this.$('.slider-value-arrow'));
 
-		ZoomRx.noHandleAnimation = true; // Disable Handle move animation initially
+		EmSlider.noHandleAnimation = true; // Disable Handle move animation initially
 		if(parent_view.get('value') == parent_view.get('svalue')) {
 			/* Since move handle function sets the slider elements to their valid positions,
 			 * Move Handle should be called atleast once.(If the value is not affected then, 
@@ -150,7 +150,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 		} else {
 			this.$('.slider-value-arrow').hide();
 		}
-		ZoomRx.noHandleAnimation = false;
+		EmSlider.noHandleAnimation = false;
 	}.observes('parentView.options'),
 	
 	panOptions: {
@@ -175,10 +175,10 @@ ZoomRx.SliderPath = Ember.View.extend({
 		}
 		var parent_view = this.get('parentView');
 		/* Hide help when the user drags the handle*/
-		if(!ZoomRx.CONSTANTS['SLIDER_WITH_HELP']) {
-			ZoomRx.CONSTANTS['SLIDER_WITH_HELP'] = parent_view.get('elementId');
+		if(!EmSlider.CONSTANTS['SLIDER_WITH_HELP']) {
+			EmSlider.CONSTANTS['SLIDER_WITH_HELP'] = parent_view.get('elementId');
 		}
-		if(!ZoomRx.usersAdjustingKnowledge && ZoomRx.CONSTANTS['SLIDER_WITH_HELP'] == parent_view.get('elementId') && parent_view.get('help')) {
+		if(!EmSlider.usersAdjustingKnowledge && EmSlider.CONSTANTS['SLIDER_WITH_HELP'] == parent_view.get('elementId') && parent_view.get('help')) {
 			this.$('.adjuster-help').css({'display': 'block', 'opacity': 0});
 			this.$('.adjuster-help-hand').addClass('adjuster-auto-slide');
 			parent_view.$('.slider-adjusters')
@@ -211,8 +211,8 @@ ZoomRx.SliderPath = Ember.View.extend({
 		var translated = rec.get('translation');
 		var parent_view = this.get('parentView');
 		var view_id = parent_view.get('elementId');
-		var handle_current_left = ZoomRx.CACHE[view_id]['HANDLE_POSITION'].left;
-		var slider_width = ZoomRx.CACHE[view_id]['PATH_WIDTH'];
+		var handle_current_left = EmSlider.CACHE[view_id]['HANDLE_POSITION'].left;
+		var slider_width = EmSlider.CACHE[view_id]['PATH_WIDTH'];
 		var newLeft = handle_current_left + translated.x;
 		if(newLeft<=0){
 			//Left most corner
@@ -221,7 +221,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 			//Right most corner
 			newLeft=slider_width;
 		}
-		ZoomRx.CACHE[view_id]['HANDLE_POSITION'].left = newLeft;
+		EmSlider.CACHE[view_id]['HANDLE_POSITION'].left = newLeft;
 		
 		//Calculate handle position in terms of percentage
 		var inPercentage = (newLeft / slider_width * 100);
@@ -295,7 +295,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 		var tap_point = event.originalEvent.changedTouches[0].pageX;
 		var path_relative_tap_point = tap_point - reduction_offset;
 		path_relative_tap_point = (path_relative_tap_point < 0) ? 0 : path_relative_tap_point;
-		var slider_width = ZoomRx.CACHE[this.getPath('parentView.elementId')]['PATH_WIDTH'];
+		var slider_width = EmSlider.CACHE[this.getPath('parentView.elementId')]['PATH_WIDTH'];
 		var percent = path_relative_tap_point / slider_width * 100;
 		
 		this.set('handlePositionPer', percent);
@@ -347,7 +347,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 				highlightPercent = percent;
 			}
 			this.set('handlePositionPer', percent);
-			if(ZoomRx.noHandleAnimation) {
+			if(EmSlider.noHandleAnimation) {
 				/* Move the handle without animation during loading */
 				this.get('slider_handle').css({'left': percent+'%'});
 				/* Set the width of the color filler a NON-ZERO value to fix the issue 
@@ -397,9 +397,9 @@ ZoomRx.SliderPath = Ember.View.extend({
 	}.observes('parentView.value'),
 	changeArrowShape: function() {
 		var view_id = this.get('parentView').get('elementId');
-		var handle_current_left = ZoomRx.CACHE[view_id]['HANDLE_POSITION'].left;
-		var path_width = ZoomRx.CACHE[view_id]['PATH_WIDTH'];
-		var indicator_width = ZoomRx.CACHE[view_id]['INDICATOR_WIDTH'] / 2;
+		var handle_current_left = EmSlider.CACHE[view_id]['HANDLE_POSITION'].left;
+		var path_width = EmSlider.CACHE[view_id]['PATH_WIDTH'];
+		var indicator_width = EmSlider.CACHE[view_id]['INDICATOR_WIDTH'] / 2;
 		
 		var percent = (handle_current_left / path_width * 100); // To check whether we can use handlepositionPercentage of the view
 		var percentage_limit = (indicator_width / path_width) * 100;
@@ -419,7 +419,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 		if(percent <= percentage_limit) { // Left pointed arrow
 			var offset_percentage = percentage_limit - percent;
 			var px = (offset_percentage / 100) * path_width;
-			if(!ZoomRx.usersAdjustingKnowledge) {
+			if(!EmSlider.usersAdjustingKnowledge) {
 				px = px  + px*3/4; // Just to make sure the indicator always stays with the path boundaries and doesnt cause the wierd scrolling effect.
 				this.$('.adjuster-help').css('margin-left', px + 'px');
 			} else {
@@ -446,7 +446,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 		} else if(percent >= (100 - percentage_limit)) { // Right pointed arrow			
 			var offset_percentage = percent - (100 - percentage_limit);
 			var px = (offset_percentage / 100) * path_width;
-			if(!ZoomRx.usersAdjustingKnowledge) {
+			if(!EmSlider.usersAdjustingKnowledge) {
 				px = px  + px*3/4; // Just to make sure the indicator always stays with the path boundaries and doesnt cause the wierd scrolling effect.
 				this.$('.adjuster-help').css('margin-left', (-px) + 'px');
 			} else {
@@ -465,7 +465,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 			// this.get('slider_value_arrow').attr('points', svg_path);
 		} else { // Middle pointed arrow
 			this.get('slider_value_indicator').css('margin-left', '');
-			if(!ZoomRx.usersAdjustingKnowledge) {
+			if(!EmSlider.usersAdjustingKnowledge) {
 				this.$('.adjuster-help').css('margin-left', '');
 			}
 			middle_corner = center;
@@ -479,7 +479,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 			// var svg_path = '55,1 62,10 69,1';
 			// this.get('slider_value_arrow').attr('points', svg_path);
 		}
-		if(!ZoomRx.usersAdjustingKnowledge) {
+		if(!EmSlider.usersAdjustingKnowledge) {
 			var options = this.get('parentView').get('options');
 			var min = options.get('sliderMin');
 			var max = options.get('sliderMax');
@@ -500,12 +500,12 @@ ZoomRx.SliderPath = Ember.View.extend({
 		}
 		var ctx = canvas.getContext("2d");
 		if(!this.get('panning')) {
-			ctx.strokeStyle = ZoomRx.indicatorArrowColor;
-			ctx.fillStyle = ZoomRx.indicatorArrowColor;
+			ctx.strokeStyle = EmSlider.indicatorArrowColor;
+			ctx.fillStyle = EmSlider.indicatorArrowColor;
 			this.$('.slider-value').removeClass('slider-value-touched');
 		} else {
-			ctx.strokeStyle = ZoomRx.indicatorTouchedColor;
-			ctx.fillStyle = ZoomRx.indicatorTouchedColor;
+			ctx.strokeStyle = EmSlider.indicatorTouchedColor;
+			ctx.fillStyle = EmSlider.indicatorTouchedColor;
 			this.$('.slider-value').addClass('slider-value-touched');
 		}
 		ctx.clearRect(0,0,canvas.width, canvas.height);
@@ -538,7 +538,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 	},
 	cacheHandlePosition: function() {
 		var view_id = this.get('parentView').get('elementId');
-		ZoomRx.CACHE[view_id]['HANDLE_POSITION'] = this.get('slider_handle').position();
+		EmSlider.CACHE[view_id]['HANDLE_POSITION'] = this.get('slider_handle').position();
 	},
 	isScrollingIntention: function(event) {
 		/* Detect if the intention of the user is scroll or slide 
@@ -562,7 +562,7 @@ ZoomRx.SliderPath = Ember.View.extend({
 	}
 });
 
-ZoomRx.Slider = Ember.View.extend({
+EmSlider.Slider = Ember.View.extend({
 	classNames: ['slider-container'],
 	handlePositionPer:0,
 	value:0,
@@ -668,7 +668,7 @@ ZoomRx.Slider = Ember.View.extend({
 		/* This function invokes the user callbacks if provided..
 		 * Arguments for the callback function which the user can use are 
 		 * arg1 - The event object for corresponding user action
-		 * arg2 - The object instance of the ZoomRx.Slider view
+		 * arg2 - The object instance of the EmSlider.Slider view
 		 * arg3 - Current value of the corresponding slider
 		 */
 		var arg1 = event,
@@ -686,7 +686,7 @@ ZoomRx.Slider = Ember.View.extend({
 		var options = this.get('options');
 		var Max = options.get('sliderMax');
 		var Min = options.get('sliderMin');
-		var handle_position = ZoomRx.CACHE[this.get('elementId')]['HANDLE_POSITION'].left;
+		var handle_position = EmSlider.CACHE[this.get('elementId')]['HANDLE_POSITION'].left;
 		var reduction_offset = this.$('.slider-path').offset().left;
 		var tap_point = event.originalEvent.changedTouches[0].pageX;
 		var current_position = tap_point - reduction_offset;
@@ -703,8 +703,8 @@ ZoomRx.Slider = Ember.View.extend({
 			return;
 		}
 		this.set('value',new_value);
-		if(!ZoomRx.usersAdjustingKnowledge) {
-			ZoomRx.usersAdjustingKnowledge = 1;
+		if(!EmSlider.usersAdjustingKnowledge) {
+			EmSlider.usersAdjustingKnowledge = 1;
 			this.stopHelpAnimation();	
 		}
 		this.get('parentView').$('.slider-adjusters').css('opacity', 1);

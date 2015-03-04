@@ -1,0 +1,23 @@
+<div class="slider-path {{view.parentView.options.highlightRange}} {{view.parentView.options.type}}">
+	<div class="slider-color-filler"></div>
+	<div class="slider-stops-container">{{{view.parentView.stops}}}</div>
+	<div class="slider-min-max-container">
+		<div class="slider-min-label">{{unbound view.parentView.options.sliderMin}}</div>
+		<div class="slider-max-label">{{unbound view.parentView.options.sliderMax}}}</div>
+	</div>
+	<div class="slider-handle">
+		<div class="slider-value-indicator" data-adjust="1">
+			<div class="slider-value" data-adjust="1">
+				<span data-adjust="1">
+					{{unbound view.parentView.value}}
+				</span>
+				<canvas class="slider-value-arrow-svg" data-notap="1"></canvas>
+				<div class="slider-value-arrow"></div>
+			</div>
+		</div>
+		<div class="adjuster-help" data-adjust="1">
+			<div class="adjuster-help-hand" data-adjust="1"></div>
+		</div>
+	</div>
+</div>
+

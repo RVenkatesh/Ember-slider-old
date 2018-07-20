@@ -1,6 +1,8 @@
 Ember Slider
 ============
 
+WARNING: THIS PROJECT IS NO LONGER SUPPORTED. THIS IS MOVED TO THE PROJECT [EMBER SLIDER](https://github.com/RVenkatesh/Ember-Slider) TO SUPPORT LATEST EMBER FEATURES.
+
 Ember slider is library built using [Ember Views](http://emberjs.com/api/classes/Ember.View.html). It enables you to include different types of sliders in any Ember view in a normal way of including a view inside a Ember template.
 This also supports a specific type called likert slider which shows the slider as a [likert scale](http://en.wikipedia.org/wiki/Likert_scale) with labels for each point. 
 
